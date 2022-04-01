@@ -1,5 +1,7 @@
-const express = require('express');
 require("dotenv").config();
+require("./games/dbconnection").open();
+const express = require('express');
+
 const path = require("path");
 const routes = require("./routes");
 
