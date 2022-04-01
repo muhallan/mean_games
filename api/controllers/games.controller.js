@@ -1,5 +1,7 @@
-const dbconnection = require('../games/dbconnection');
-const ObjectId = require('mongodb').ObjectId;
+const dbconnection = require('../data/dbconnection');
+
+const mongoose = require('mongoose');
+const Game = mongoose.model(process.env.GAME_MODEL);
 
 module.exports.getAll = (req, res) => {
 
@@ -16,19 +18,17 @@ module.exports.getAll = (req, res) => {
         offset = parseInt(req.query.offset);
     }
 
-    const gamesCollection = getGamesCollection();
-
-    gamesCollection.find().skip(offset).limit(count).toArray((err, games) => {
+    Game.find().skip(offset).limit(count).exec((err, games) => {
         res.status(200).json(games);
     });
 
 };
 
 module.exports.getOne = (req, res) => {
-    const gamesController = getGamesCollection();
+
     const gameId = req.params.gameId;
 
-    gamesController.findOne({_id: ObjectId(gameId)}, (err, game) => {
+    Game.findById(gameId).exec((err, game) => {
         if (err) {
             res.status(500).json({error: err});
         } else {
@@ -69,9 +69,8 @@ module.exports.addOne = (req, res) => {
 };
 
 module.exports.deleteOne = (req, res) => {
-    const gamesCollection = getGamesCollection();
     const gameId = req.params.gameId;
-    gamesCollection.deleteOne({_id: ObjectId(gameId)}, (err, result) => {
+    Game.findByIdAndDelete(gameId).exec((err, result) => {
         if (err) {
             res.status(500).json({error: err});
         } else {

@@ -1,9 +1,10 @@
 require("dotenv").config();
-require("./games/dbconnection").open();
+require("./api/data/dbconnection").open();
+require("./api/data/db");
 const express = require('express');
 
 const path = require("path");
-const routes = require("./routes");
+const routes = require("./api/routes");
 
 const app = express();
 
