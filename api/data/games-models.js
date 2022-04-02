@@ -5,8 +5,32 @@ const PublisherSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    country: String,
+    country: {
+        type: String,
+        required: true
+    },
     established: Number
+});
+
+const ReviewSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
+    },
+    review: {
+        type: String,
+        required: true
+    },
+    postDate: {
+        type: Date,
+        default: Date.Now
+    }
 });
 
 const GamesSchema = mongoose.Schema({
@@ -37,6 +61,7 @@ const GamesSchema = mongoose.Schema({
         min: 6,
         max: 99
     },
+    reviews: [ReviewSchema],
     publisher: PublisherSchema,
     designers: [String]
 });
