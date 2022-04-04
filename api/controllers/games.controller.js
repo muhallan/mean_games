@@ -101,7 +101,7 @@ const _updateOne = (req, res, setGameUpdates) => {
         response.status = 500;
         response.message = {message: "Invalid Game ID provided"};
     } else {
-        Game.findById(gameId).exec((err, game) => _getGameUpdateCallback(err, game, req, res, response, setGameUpdates));
+        Game.findById(gameId).exec((err, game) => _getGameUpdateCallback(err, game, gameId, req, res, response, setGameUpdates));
     }
     if (response.status !== 200) {
         res.status(response.status).json(response.message);
@@ -127,7 +127,7 @@ const _setFullGameUpdates = (req, game, response) => {
     game.reviews = reviews;
 }
 
-const _getGameUpdateCallback = (err, game, req, res, response, setGameUpdates) => {
+const _getGameUpdateCallback = (err, game, gameId, req, res, response, setGameUpdates) => {
     if (err) {
         console.log("Error reading games");
         response.status = 500;
