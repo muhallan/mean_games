@@ -11,7 +11,9 @@ router.route('/games')
 
 router.route('/games/:gameId')
     .get(gamesController.getOne)
-    .delete(gamesController.deleteOne);
+    .delete(gamesController.deleteOne)
+    .put(gamesController.replaceOne)
+    .patch(gamesController.partialUpdateOne);
 
 router.route('/games/:gameId/publisher')
     .get(publisherController.getOne);

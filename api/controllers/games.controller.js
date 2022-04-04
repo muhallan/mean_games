@@ -79,6 +79,112 @@ module.exports.deleteOne = (req, res) => {
     });
 };
 
+module.exports.replaceOne = (req, res) => {
+    console.log("replace one game controller");
+    _updateOne(req, res, _setFullGameUpdates);
+};
+
+module.exports.partialUpdateOne = (req, res) => {
+    console.log("Patch one game controller");
+    _updateOne(req, res, _setPartialGameUpdates);
+};
+
+const _updateOne = (req, res, setGameUpdates) => {
+    const response = {
+        status: 200,
+        message: {}
+    };
+
+    const gameId = req.params.gameId;
+    if (!mongoose.isValidObjectId(gameId)) {
+        console.log("Invalid game ID");
+        response.status = 500;
+        response.message = {message: "Invalid Game ID provided"};
+    } else {
+        Game.findById(gameId).exec((err, game) => _getGameUpdateCallback(err, game, req, res, response, setGameUpdates));
+    }
+    if (response.status !== 200) {
+        res.status(response.status).json(response.message);
+    }
+};
+
+const _setFullGameUpdates = (req, game, response) => {
+    game.title = req.body.title;
+    game.year = req.body.year;
+    game.rate = req.body.rate;
+    game.price = req.body.price;
+    game.minPlayers = req.body.minPlayers;
+    game.maxPlayers = req.body.maxPlayers;
+    game.minAge = req.body.minAge;
+    game.publisher = req.body.publisher;
+    game.designers = req.body.designers;
+    let reviews = req.body.reviews;
+    if (Array.isArray(reviews)) {
+        reviews = reviews.filter(review => Object.keys(review).length != 0);
+    } else {
+        reviews = [];
+    }
+    game.reviews = reviews;
+}
+
+const _getGameUpdateCallback = (err, game, req, res, response, setGameUpdates) => {
+    if (err) {
+        console.log("Error reading games");
+        response.status = 500;
+        response.message = {error: err};
+    } else if(!game) {
+        console.log("Game not found");
+        response.status = 404;
+        response.message = {message: "Game with id " + gameId + " not found"};
+    } else {
+        console.log("Game found");
+   
+        setGameUpdates(req, game, response);
+
+        game.save((err, savedGame) => _saveUpdatedGameCallback(err, savedGame, res, response));
+    }
+    if (response.status !== 200) {
+        res.status(response.status).json(response.message);
+    }
+};
+
+const _setPartialGameUpdates = (req, game, response) => {
+    game.title = req.body.title || game.title;
+    game.year = req.body.year || game.year;
+    game.rate = req.body.rate || game.rate;
+    game.price = req.body.price || game.price;
+    game.minPlayers = req.body.minPlayers || game.minPlayer;
+    game.maxPlayers = req.body.maxPlayers || game.maxPlayer;
+    game.minAge = req.body.minAge || game.minAge;
+    game.publisher = req.body.publisher || game.publisher;
+    game.designers = req.body.designers || game.designers;
+    let reviews = req.body.reviews;
+    if (Array.isArray(reviews)) {
+        reviews = reviews.filter(review => Object.keys(review).length != 0);
+    } else if (!reviews) {
+        let currentReviews = game.reviews;
+        currentReviews = currentReviews.filter(review => Object.keys(review).length != 0);
+        reviews = currentReviews
+    } else if (reviews) {
+        response.status = 400;
+        response.message = "reviews must be an array of review objects";
+    }
+    game.reviews = reviews;
+};
+
+const _saveUpdatedGameCallback = (err, savedGame, res, response) => {
+    if (err) {
+        console.log("Error saving games");
+        response.status = 500;
+        response.message = {error: err};
+    } else {
+        console.log("Game updated");
+        response.status = 200;
+        response.message = savedGame;
+    }
+    res.status(response.status).json(response.message);
+}
+
 const getGamesCollection = () => {
     const db = dbconnection.get();
     return db.collection("games");
