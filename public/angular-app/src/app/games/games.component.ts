@@ -16,13 +16,17 @@ export class GamesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchGames();
+  }
+
+  fetchGames() {
     this.gameService.getGames().subscribe(games => this.games = games);
   }
 
-  confirmDelete(game: Game) {
+  confirmDelete(gameId: string) {
     if(confirm("Do you want to delete this game?")) {
-      this.gameService.deleteGame(game._id).subscribe(result => {
-        this.games = this.games.filter(notDeleted => notDeleted._id !== game._id);
+      this.gameService.deleteGame(gameId).subscribe(result => {
+        this.fetchGames();
       });
     }
   }
