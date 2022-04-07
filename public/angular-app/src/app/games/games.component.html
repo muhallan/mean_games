@@ -1,0 +1,17 @@
+<div style="margin-top: 40px;">
+    <div class="row d-flex flex-row card" style="margin: 20px;" *ngFor="let game of games">
+        <div class="col">
+            <a class="card-title card-link h4" routerLink="/game/{{game._id}}">{{game.title}}</a>
+        </div>
+        <div class="col-2 align-items-end align-self-center">
+            <a class="special_btn btn btn-primary a-btn-slide-text" >
+                <span class="fa fa-edit" aria-hidden="true"></span>
+                <span>Edit</span>            
+            </a>
+            <a (click)="confirmDelete(game)" class="special_btn btn btn-primary a-btn-slide-text">
+                <span class="fa fa-remove" aria-hidden="true"></span>
+                <span>Delete</span>            
+            </a>
+        </div>
+    </div>
+</div>

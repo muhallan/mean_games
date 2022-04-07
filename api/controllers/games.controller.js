@@ -6,7 +6,7 @@ const Game = mongoose.model(process.env.GAME_MODEL);
 module.exports.getAll = (req, res) => {
 
     let offset = 0;
-    let count = 3;
+    let count = 10;
 
     if (req.query && req.query.count) {
         count = parseInt(req.query.count);
