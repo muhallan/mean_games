@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/';
 
 import { Game } from './_models/game';
@@ -27,6 +27,18 @@ export class GamesDataService {
   public deleteGame(gameId: string): Observable<any> {
     const url: string = this.baseUrl + "games/" + gameId;
     return this.http.delete(url);
+  }
+
+  public createGame(game: Object): Observable<Game> {
+    const url: string = this.baseUrl + "games";
+    return this.http.post<Game>(url, game, this.getHeaders());
+  }
+
+  private getHeaders() {
+    const options = {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    }
+    return options;
   }
 
 }

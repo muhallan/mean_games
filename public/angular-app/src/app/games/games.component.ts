@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { GamesDataService } from '../games-data.service';
 import { Game } from '../_models/game';
@@ -12,7 +13,7 @@ export class GamesComponent implements OnInit {
 
   games!: Game[];
 
-  constructor(private gameService: GamesDataService) { 
+  constructor(private gameService: GamesDataService, private _router: Router) { 
   }
 
   ngOnInit(): void {
@@ -29,6 +30,10 @@ export class GamesComponent implements OnInit {
         this.fetchGames();
       });
     }
+  }
+
+  openAddGame() {
+    this._router.navigate(["add_game"]);
   }
 
 }

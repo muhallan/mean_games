@@ -9,8 +9,10 @@ const routes = require("./api/routes");
 const app = express();
 
 app.use("/api", (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "http://localhost:4200");
-    res.header('Access-Contol-Allow-Headers', 'Content-Type', 'Origin', 'Accept', 'X-Requested-With');
+    console.log(req.headers);
+    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+    // res.header("Access-Contol-Allow-Headers", "Accept, Accept-Language, Content-Language, Content-Type");
+    res.header('Access-Control-Allow-Headers', 'Origin, XRequested-With, Content-Type, Accept');
     res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE");
     next();
 });

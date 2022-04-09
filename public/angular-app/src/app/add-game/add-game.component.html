@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="text-center">Add Game</h2> <br />
+
+        <form [formGroup]="addGameForm" (ngSubmit)="addGame(addGameForm)" novalidate>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" formControlName="title" />
+                <div *ngIf="isFieldValid(title)" class="help-block text-danger">Title is required</div>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" formControlName="price" />
+                <div *ngIf="isFieldValid(price)" class="help-block text-danger">Price must be a number</div>
+            </div>
+            <div class="form-group">
+                <label for="minAge">Minimum Age</label>
+                <input type="text" class="form-control" formControlName="minAge" />
+                <div *ngIf="isFieldValid(minAge)" class="help-block text-danger">Minimum Age is required. (Number between 6 and 99)</div>
+            </div>
+            <div class="form-group">
+                <label for="minPlayers">Minimum Players</label>
+                <input type="text" class="form-control" formControlName="minPlayers" />
+                <div *ngIf="isFieldValid(minPlayers)" class="help-block text-danger">Minimum Players is required. (Number between 1 and 11)</div>
+            </div>
+            <div class="form-group">
+                <label for="maxPlayers">Maximum Players</label>
+                <input type="text" class="form-control" formControlName="maxPlayers" />
+                <div *ngIf="isFieldValid(maxPlayers)" class="help-block text-danger">Maximum Players is required. (Number between 1 and 11)</div>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="text" class="form-control" formControlName="year" />
+                <div *ngIf="isFieldValid(year)" class="help-block text-danger">Year must be a number</div>
+            </div>
+            <div class="form-group">
+                <label for="rate">Rate</label>
+                <input type="text" class="form-control" formControlName="rate" />
+                <div *ngIf="isFieldValid(rate)" class="help-block text-danger">Rate must be a number between 1 and 5</div>
+            </div>
+            <div class="form-group text-center" style="margin-top: 30px;">
+                <button class="btn btn-primary">Add Game</button>
+                <a [routerLink]="['/games']" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
